@@ -457,10 +457,22 @@ void setup() {
 
     tft.init();
     tft.setRotation(viperConfigPins.rotation);
-    tft.fillScreen(TFT_BLACK);
     // viperConfig is not read yet.. just to show something on screen due to long boot time
-    tft.setTextColor(TFT_PURPLE, TFT_BLACK);
-    tft.drawCentreString("Booting", tft.width() / 2, tft.height() / 2, 1);
+    // Viper pre-boot screen: black text on bright venom green (#39FF14)
+    {
+        const uint16_t venomBg = 0x3FE2;
+        const int w = tft.width(), h = tft.height();
+        const int big = h >= 200 ? 4 : 3;   // "VIPER" wordmark
+        const int small = h >= 200 ? 2 : 1; // "booting..."
+        tft.fillScreen(venomBg);
+        tft.setTextColor(TFT_BLACK, venomBg);
+        tft.setTextSize(big);
+        int blockH = 8 * big + 8 + 8 * small;
+        int y = (h - blockH) / 2;
+        tft.drawCentreString("VIPER", w / 2, y, 1);
+        tft.setTextSize(small);
+        tft.drawCentreString("booting...", w / 2, y + 8 * big + 8, 1);
+    }
     RAM_LOG("first-display-elem"); // first element drawn on screen
 
     _pre_storage_gpio();
