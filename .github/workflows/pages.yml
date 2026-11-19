@@ -1,0 +1,57 @@
+name: Deploy website to GitHub Pages
+
+# Publishes website/ to https://<owner>.github.io/<repo>/ and bundles the latest
+# firmware images (from the betaRelease prerelease made by "Build and Push Releases")
+# into website/firmware/ so the web flasher can load them from the same origin.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "website/**"
+      - ".github/workflows/pages.yml"
+  workflow_run:
+    workflows: ["Build and Push Releases"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bundle firmware from betaRelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p website/firmware
+          if gh release view betaRelease --repo "${{ github.repository }}" > /dev/null 2>&1; then
+            gh release download betaRelease --repo "${{ github.repository }}" \
+              --pattern "Viper-*.bin" --dir website/firmware --clobber
+          else
+            echo "No betaRelease yet - publishing the site without firmware files."
+          fi
+          ls -la website/firmware
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

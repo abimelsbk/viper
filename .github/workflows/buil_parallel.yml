@@ -26,6 +26,11 @@ on:
       - "*"
   workflow_dispatch:
 
+# New repos give GITHUB_TOKEN read-only access; the release steps need to write.
+permissions:
+  contents: write
+  issues: write
+
 jobs:
   compile_sketch:
     name: Build ${{ matrix.board.env }}
@@ -308,20 +313,8 @@ jobs:
           make_latest: false
           generate_release_notes: false
 
-      - name: Checkout main to trigger WebPage deploy
-        if: ${{ success() }}
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 1
-
-      - name: Trigger WebPage deploy (workflow_dispatch)
-        if: ${{ success() }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow list
-          gh workflow run .github/workflows/deploy.yml --ref WebPage
+      # The website (and its web-flasher firmware) is redeployed by pages.yml,
+      # which runs automatically when this workflow completes successfully.
 
   create_release:
     runs-on: ubuntu-latest
