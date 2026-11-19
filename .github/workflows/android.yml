@@ -59,7 +59,13 @@ jobs:
           VIPER_VERSION_CODE: ${{ github.run_number }}
           VIPER_VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('1.17-{0}', github.run_number) }}
         run: |
-          gradle -p android --no-daemon assembleRelease
+          set -o pipefail
+          if ! gradle -p android --no-daemon --console=plain assembleRelease 2>&1 | tee gradle.log; then
+            # Surface the real errors as annotations (readable on the run page without signing in)
+            grep -E "^e: |error:|ERROR:|What went wrong|Execution failed|> .*(failed|error|not found)|Caused by" gradle.log \
+              | head -25 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done
+            exit 1
+          fi
           cp android/app/build/outputs/apk/release/app-release.apk Viper-Android.apk
           ls -la Viper-Android.apk
 
