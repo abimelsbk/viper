@@ -199,7 +199,7 @@ void Pn532ble::loadNdefEmulateMenu() {
     String prefix = "";
 
     options = {
-        {"Visit Viper", [&]() { prefix = "https://bruce.computer"; }},
+        {"Visit Viper", [&]() { prefix = "https://github.com/abimelsbk/viper"; }},
         {"Open Url",    [&]() { prefix = "https://"; }              },
         {"Phone Call",  [&]() { prefix = "tel:"; }                  },
         {"Send Email",  [&]() { prefix = "mailto:"; }               },

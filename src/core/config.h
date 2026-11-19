@@ -107,8 +107,8 @@ public:
 
     std::vector<QrCodeEntry> qrCodes = {
         {"Viper AP",   "WIFI:T:WPA;S:ViperNet;P:vipernet;;"},
-        {"Viper Wiki", "https://github.com/pr3y/Bruce/wiki"},
-        {"Viper Site", "https://bruce.computer"            },
+        {"Viper Docs", "https://github.com/abimelsbk/viper/tree/main/docs"},
+        {"Viper Repo", "https://github.com/abimelsbk/viper"},
         {"Rickroll",   "https://youtu.be/dQw4w9WgXcQ"      }
     };
 

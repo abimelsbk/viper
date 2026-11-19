@@ -42,7 +42,7 @@ void _setup_gpio() {
         {"Shared SPI",
          {viperConfigPins.SDCARD_bus.sck, viperConfigPins.SDCARD_bus.miso, viperConfigPins.SDCARD_bus.mosi,
           GPIO_NUM_33, GPIO_NUM_32, GPIO_NUM_NC},
-         "https://github.com/pr3y/Bruce/blob/main/media/connections/cc1101_stick_SDCard.jpg"}
+         "https://github.com/abimelsbk/viper/blob/main/media/connections/cc1101_stick_SDCard.jpg"}
     };
     viperConfigPins.NRF24_presets = {
         {"Shared SPI",

@@ -263,7 +263,7 @@ uint32_t rfidNdefCallback(cmd *c) {
         value += cmd.getArgument(i).getValue();
     }
     type.toLowerCase();
-    if (value.length() == 0) value = (type == "text") ? "Viper" : "https://bruce.computer";
+    if (value.length() == 0) value = (type == "text") ? "Viper" : "https://github.com/abimelsbk/viper";
 
     if (!_ensureRfid()) return false;
 

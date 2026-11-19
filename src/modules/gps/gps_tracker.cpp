@@ -176,7 +176,7 @@ void GPSTracker::add_initial_file_data(File file) {
     file.println("  <metadata>");
     file.println("    <name>Viper GPS Tracker</name>");
     file.println("    <desc>GPS Tracker using Viper Firmware</desc>");
-    file.println("    <link href=\"https://bruce.computer\">");
+    file.println("    <link href=\"https://github.com/abimelsbk/viper\">");
     file.println("      <text>Viper Website</text>");
     file.println("    </link>");
     file.println("  </metadata>");

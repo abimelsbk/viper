@@ -527,7 +527,7 @@ bool ST25R3916::_buildLoadedNdefMessage(std::vector<uint8_t> &ndefOut) {
     if (st25ExtractNdefMessageFromPageDump(strAllPages, ndefOut)) return true;
     if (st25BuildNdefMessageFromStruct(ndefMessage, ndefOut)) return true;
 
-    std::vector<uint8_t> uriPayload = Ndef::urlNdefAbbrv("https://bruce.computer");
+    std::vector<uint8_t> uriPayload = Ndef::urlNdefAbbrv("https://github.com/abimelsbk/viper");
     ndefOut = Ndef::newMessage(uriPayload);
     return !ndefOut.empty();
 }
@@ -3118,7 +3118,7 @@ void ST25R3916::_buildT4TFiles() {
         memcpy(&rec[4], ndefMessage.payload, ndefMessage.payloadSize);
         rl = (uint16_t)(4 + ndefMessage.payloadSize);
     } else {
-        // Default: URI "https://bruce.computer".
+        // Default: URI "https://github.com/abimelsbk/viper".
         const char *url = "viper.computer";
         uint8_t ul = (uint8_t)strlen(url);
         rec[0] = 0xD1;
