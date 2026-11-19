@@ -24,3 +24,6 @@ lib/mquickjs_headers/mqjs_stdlib_generator.exe
 .github/agents/Viper-AI.agent.md
 .idea
 .ai
+
+# built firmware for the web flasher (publish via Releases, not git)
+website/firmware/*.bin
