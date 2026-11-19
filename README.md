@@ -9,6 +9,10 @@ wrapped in a new "venom" interface.
 > Viper is a fork of [Bruce firmware](https://github.com/pr3y/Bruce) by pr3y and contributors, and stays licensed under **AGPL-3.0**.
 > All original features are kept. See [Credits](#credits).
 
+## Documentation
+
+Full guides are in [`docs/`](docs/README.md): [install](docs/getting-started/install.md), [controls](docs/using/navigation.md), [every feature](docs/README.md#features-main-menu), [JavaScript scripting](docs/scripting/javascript.md), [serial commands](docs/using/serial-cli.md) and [building](docs/development/building.md).
+
 ## What's new in Viper
 
 - **New identity**: Viper name, serpent-in-hexagon logo, venom-green palette (`#39FF14`) as the default theme.
