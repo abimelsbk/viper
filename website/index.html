@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Viper Firmware</title>
+  <meta name="description" content="Viper — open-source ESP32 firmware for offensive security research on M5Stack and other ESP32 devices." />
+  <link rel="icon" href="assets/viper-logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top">
+      <img src="assets/viper-logo.svg" alt="" width="34" height="34" />
+      <span>VIPER</span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#devices">Devices</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+      <a href="flasher.html" class="nav-cta">Web Flasher</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">// ESP32 OFFENSIVE-SECURITY FIRMWARE</p>
+        <h1>Strike first.<br /><span class="glow">Viper</span> firmware.</h1>
+        <p class="lead">
+          A fast, open-source multitool for authorized red-team work and hardware research.
+          Wi-Fi, BLE, Sub-GHz, RFID/NFC, IR, NRF24, BadUSB and a JavaScript runtime,
+          in one sharp interface on every M5Stack.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="flasher.html">Flash from browser</a>
+          <a class="btn btn-ghost" href="#install">Manual install</a>
+        </div>
+        <ul class="hero-stats">
+          <li><b>13</b><span>M5 targets</span></li>
+          <li><b>50+</b><span>board builds</span></li>
+          <li><b>AGPL</b><span>open source</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-art">
+        <svg class="logo-anim" viewBox="0 0 100 100" role="img" aria-label="Viper logo">
+          <defs>
+            <filter id="g" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="2.4" result="b" />
+              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g fill="none" stroke="var(--venom)" stroke-linejoin="round" filter="url(#g)">
+            <polygon class="hex" pathLength="100" points="50,6 88.1,28 88.1,72 50,94 11.9,72 11.9,28" stroke-width="2.2" />
+            <polygon class="hex-in" points="50,11 83.8,30.5 83.8,69.5 50,89 16.2,69.5 16.2,30.5" stroke-width=".8" />
+            <path class="serpent-shadow" pathLength="100" d="M34.96 71.47 A16 16 0 1 0 50 50 A16 16 0 1 1 63.86 26" stroke-width="10" stroke-linecap="round" />
+            <path class="serpent" pathLength="100" d="M34.96 71.47 A16 16 0 1 0 50 50 A16 16 0 1 1 63.86 26" stroke-width="6.5" stroke-linecap="round" />
+          </g>
+          <g class="head" filter="url(#g)">
+            <polygon points="67.86,32.9 59.53,28.5 62.6,23.8 68.19,23.5" fill="var(--venom)" />
+            <circle cx="63.3" cy="27.4" r="1.1" fill="#050a05" />
+            <path class="tongue" d="M68.5 34 l2.2 4 m0 0 l-1.4 2.2 m1.4 -2.2 l2.4 1" stroke="#ff3355" stroke-width=".9" fill="none" stroke-linecap="round" />
+          </g>
+        </svg>
+        <div class="device-frame" aria-hidden="true">
+          <div class="screen">
+            <div class="sb"><span>VIPER</span><span>&#9646;&#9646;&#9646; 87%</span></div>
+            <div class="rule"><i></i></div>
+            <div class="carousel">
+              <span class="fang l"></span>
+              <span class="card" id="demoItem">WIFI</span>
+              <span class="fang r"></span>
+            </div>
+            <div class="count" id="demoCount">01/14</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <h2><span class="tag">01</span> Why Viper</h2>
+      <div class="cards">
+        <article class="card-f">
+          <h3>Open source, for real</h3>
+          <p>AGPL-3.0 firmware built on the Bruce project. Read it, fork it, audit every line before you flash it.</p>
+        </article>
+        <article class="card-f">
+          <h3>Every M5Stack</h3>
+          <p>StickC Plus 1.1 / Plus2 / S3, Cardputer & ADV, Core, Core2, CoreS3 / SE, AtomS3, DinMeter, StackChan, Tab5 and more.</p>
+        </article>
+        <article class="card-f">
+          <h3>Wi-Fi & BLE</h3>
+          <p>Scanning, captive-portal testing, handshake capture, wardriving logs, packet sniffing to PCAP and BLE tooling.</p>
+        </article>
+        <article class="card-f">
+          <h3>Sub-GHz, RFID, IR</h3>
+          <p>CC1101 record &amp; replay, NFC / RFID read, write and emulate, IR TV-B-Gone and learning remotes.</p>
+        </article>
+        <article class="card-f">
+          <h3>JavaScript runtime</h3>
+          <p>Write your own tools in JS and run them from the SD card. Scripts made for Bruce keep working.</p>
+        </article>
+        <article class="card-f">
+          <h3>New venom UI</h3>
+          <p>Animated serpent boot, fang-chevron carousel, position track, pill selection and a matching web interface.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- RELEASE -->
+    <section class="section release">
+      <div>
+        <h2><span class="tag">02</span> Latest release</h2>
+        <p class="lead small">Viper 1.17: full rebrand, new boot animation, redesigned navigation, auto-migration of existing Bruce settings.</p>
+      </div>
+      <a class="btn btn-primary" href="flasher.html">Install 1.17</a>
+    </section>
+
+    <!-- DEVICES -->
+    <section id="devices" class="section">
+      <h2><span class="tag">03</span> Supported devices</h2>
+      <p class="muted">✅ built in &nbsp; ➕ with external module &nbsp; ❌ not available</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Device</th><th>CC1101</th><th>NRF24</th><th>NFC</th><th>Mic</th><th>BadUSB</th><th>Speaker</th><th>Build</th></tr>
+          </thead>
+          <tbody id="deviceRows"></tbody>
+        </table>
+      </div>
+      <p class="muted small">Also builds for LilyGO T-Embed / T-Deck / T-Display, CYD, ESP32-WROOM + ILI9341/ST7789, ESP32-S3 and ESP32-C5 boards. Wiring diagrams live in each board folder.</p>
+    </section>
+
+    <!-- INSTALL -->
+    <section id="install" class="section">
+      <h2><span class="tag">04</span> Install</h2>
+      <div class="steps">
+        <div class="step">
+          <b>1</b>
+          <h3>Web Flasher</h3>
+          <p>Chrome or Edge on desktop. Plug your device in over USB, pick the board, click install.</p>
+          <a class="btn btn-ghost" href="flasher.html">Open flasher</a>
+        </div>
+        <div class="step">
+          <b>2</b>
+          <h3>esptool</h3>
+          <p>Download <code>Viper-&lt;board&gt;.bin</code> from Releases and write it at offset 0:</p>
+          <pre><code>esptool.py --port COM5 write_flash 0x0 Viper-m5stack-cores3.bin</code></pre>
+        </div>
+        <div class="step">
+          <b>3</b>
+          <h3>Build it yourself</h3>
+          <p>Clone the repo, install PlatformIO, then:</p>
+          <pre><code>pio run -e m5stack-cores3 -t upload</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <h2><span class="tag">05</span> FAQ</h2>
+      <details>
+        <summary>I used Bruce before. Do I lose my settings?</summary>
+        <p>No. On first boot Viper renames <code>/bruce.conf</code> and <code>/brucePins.conf</code> to the Viper names and reads saved Bruce capture files. Move your SD folders from <code>/BruceRF</code>, <code>/BruceIR</code> and so on to <code>/ViperRF</code>, <code>/ViperIR</code> and so on to keep using them.</p>
+      </details>
+      <details>
+        <summary>How do I skip the boot animation?</summary>
+        <p>Press any key. To use your own splash, put <code>boot.jpg</code> or <code>boot.gif</code> on the SD card root.</p>
+      </details>
+      <details>
+        <summary>Can I use it on a bare ESP32-WROOM?</summary>
+        <p>Yes. Use the <code>esp-wroom32-ili9341</code> or <code>esp-wroom32-st7789</code> build with a matching SPI display, or the <code>CYD-2432S028</code> build for the Cheap Yellow Display.</p>
+      </details>
+      <details>
+        <summary>Is this legal to use?</summary>
+        <p>Viper is a research and education tool. Only test networks, radios and devices you own or have written permission to assess. You are responsible for following the laws where you live.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="brand small">
+      <img src="assets/viper-logo.svg" alt="" width="24" height="24" /><span>VIPER</span>
+    </div>
+    <p>
+      Viper is a fork of <a href="https://github.com/pr3y/Bruce">Bruce firmware</a> by pr3y and contributors,
+      licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0</a>. Source code is available to everyone who receives the firmware.
+    </p>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>

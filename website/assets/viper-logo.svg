@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Viper">
+  <defs>
+    <filter id="vglow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="#39ff14" stroke-linejoin="round" filter="url(#vglow)">
+    <polygon points="50,6 88.1,28 88.1,72 50,94 11.9,72 11.9,28" stroke-width="2.4"/>
+    <polygon points="50,11 83.8,30.5 83.8,69.5 50,89 16.2,69.5 16.2,30.5" stroke-width="1" opacity=".45"/>
+    <path d="M34.96 71.47 A16 16 0 1 0 50 50 A16 16 0 1 1 63.86 26" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <polygon points="67.86,32.9 59.53,28.5 62.6,23.8 68.19,23.5" fill="#39ff14" filter="url(#vglow)"/>
+  <circle cx="63.3" cy="27.4" r="1.1" fill="#050a05"/>
+</svg>

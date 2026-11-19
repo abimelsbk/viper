@@ -1,0 +1,200 @@
+#include "core/bus_HAL.h"
+#include "core/powerSave.h"
+#include "hal/bright/bright.h"
+#include "hal/device.h"
+#include "hal/inputs/buttons.h"
+#include <globals.h>
+#include <interface.h>
+
+// Power handler for battery detection
+#include "core/i2c_finder.h"
+#include <Wire.h>
+
+#define SEL_BTN 0
+
+#define BTN_ACT LOW
+#define DW_BTN 40
+#define ESC_BTN 21
+#define L_BTN 39
+#define R_BTN 38
+#define UP_BTN 41
+
+static DeviceButtons buttonsCfg() { return DeviceButtons{L_BTN, R_BTN, UP_BTN, DW_BTN, SEL_BTN, ESC_BTN}; }
+// Charger chip
+
+/***************************************************************************************
+** Function name: _setup_gpio()
+** Location: main.cpp
+** Description:   initial setup for the device
+***************************************************************************************/
+
+// BATTERY GAUGE
+#define BATTERY_DESIGN_CAPACITY 1000
+bool gaugeOn = false;
+
+void _setup_gpio() {
+    viperConfigPins.buzzer = 10;
+    viperConfigPins.sys_i2c = {(gpio_num_t)47, (gpio_num_t)48}; // sda, scl
+    viperConfigPins.i2c_bus = {(gpio_num_t)47, (gpio_num_t)48}; // sda, scl (Grove)
+    viperConfigPins.rfTx = 47;
+    viperConfigPins.rfRx = 48;
+    viperConfigPins.irTx = 47;
+    viperConfigPins.irRx = 1;
+    viperConfigPins.rotation = 1;
+    viperConfigPins.uart_bus = {(gpio_num_t)44, (gpio_num_t)43};   // rx, tx
+    viperConfigPins.gps_bus = {(gpio_num_t)44, (gpio_num_t)43};    // rx, tx
+    viperConfigPins.badusb_bus = {(gpio_num_t)48, (gpio_num_t)47}; // rx, tx (CH9329)
+    // Board's default/generic SPI bus (used by drivers without their own bus, e.g. RC522-SPI)
+    viperConfigPins.outer_bus = {(gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)11};
+    viperConfigPins.PN532_bus = {(gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)11};
+    // CC1101/NRF24/SDCARD/LoRa/ST25R share the main SPI bus (sck=17, miso=8, mosi=18)
+    viperConfigPins.CC1101_bus = {
+        (gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)9, (gpio_num_t)46, GPIO_NUM_NC
+    }; // sck,miso,mosi,cs,gdo0,gdo2
+    viperConfigPins.NRF24_bus = {
+        (gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)13, (gpio_num_t)14
+    }; // sck,miso,mosi,cs(ss),ce
+    viperConfigPins.SDCARD_bus = {
+        (gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)3
+    }; // sck,miso,mosi,cs
+    viperConfigPins.ST25R_bus = {
+        (gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)11, (gpio_num_t)12, GPIO_NUM_NC
+    }; // sck,miso,mosi,cs,irq,-
+#if !defined(LITE_VERSION)
+    viperConfigPins.LoRa_bus = {
+        (gpio_num_t)17, (gpio_num_t)8, (gpio_num_t)18, (gpio_num_t)4, (gpio_num_t)43, GPIO_NUM_NC
+    }; // sck,miso,mosi,cs,rst,dio0
+#endif
+
+    setSysI2CBus(&Wire); // PMU/battery gauge live on the default Wire object
+    Wire.setPins(viperConfigPins.sys_i2c.sda, viperConfigPins.sys_i2c.scl);
+    Wire.begin(viperConfigPins.sys_i2c.sda, viperConfigPins.sys_i2c.scl);
+
+    hal_buttons_init(buttonsCfg(), 6);
+
+    pinMode(viperConfigPins.CC1101_bus.cs, OUTPUT);
+    pinMode(viperConfigPins.NRF24_bus.cs, OUTPUT);
+    pinMode(viperConfigPins.ST25R_bus.cs, OUTPUT); /// NFC PIN
+    digitalWrite(viperConfigPins.CC1101_bus.cs, HIGH);
+    digitalWrite(viperConfigPins.NRF24_bus.cs, HIGH);
+    digitalWrite(viperConfigPins.ST25R_bus.cs, HIGH);
+
+    // Starts SPI instance for CC1101 and NRF24 with CS pins blocking communication at start
+
+    pinMode(TFT_CS, OUTPUT);
+    digitalWrite(TFT_CS, HIGH);
+    pinMode(viperConfigPins.SDCARD_bus.cs, OUTPUT);
+    digitalWrite(viperConfigPins.SDCARD_bus.cs, HIGH);
+
+    viperConfigPins.rfModule = CC1101_SPI_MODULE;
+    viperConfigPins.rfidModule = ST25R3916_SPI_MODULE;
+
+    DevicePmic pmicCfg;
+    pmicCfg.pin_sda = viperConfigPins.sys_i2c.sda;
+    pmicCfg.pin_scl = viperConfigPins.sys_i2c.scl;
+    pmicCfg.address = 0x6B; // BQ25896
+    hal_pmic_init(pmicCfg, 2000);
+    Wire.beginTransmission(BQ27220_I2C_ADDRESS);
+    if (Wire.endTransmission() == 0) {
+        DeviceGauge gaugeCfg;
+        gaugeCfg.design_capacity_mah = BATTERY_DESIGN_CAPACITY;
+        hal_gauge_init(gaugeCfg);
+        gaugeOn = true;
+    }
+}
+/***************************************************************************************
+** Function name: _post_setup_gpio()
+** Description:   second stage gpio setup after TFT is initialized
+***************************************************************************************/
+void _post_setup_gpio() {
+    // Backlight control via PWM (must be after TFT init)
+    hal_bright_attach(TFT_BL);
+    hal_bright_set(TFT_BL, 100); // Full brightness initially
+}
+/***************************************************************************************
+** Function name: getBattery()
+** location: display.cpp
+
+** Description:   Delivers the battery value from 1-100+
+***************************************************************************************/
+int getBattery() {
+    int percent = 0;
+    if (gaugeOn) {
+        percent = hal_gauge_get_percent();
+    } else {
+        int voltage = hal_pmic_get_batt_voltage_mv();
+        percent = (voltage - 3300) * 100 / (float)(4150 - 3350);
+
+        if (percent < 0) return 1;
+        if (percent > 100) percent = 100;
+
+        if (hal_pmic_is_charging() && percent >= 97) {
+            hal_pmic_disable_bat_load();
+            percent = 95; // estimate still charging
+        }
+
+        if (hal_pmic_is_charge_done()) { percent = 100; }
+    }
+
+    return (percent < 0) ? 0 : (percent >= 100) ? 100 : percent;
+}
+
+bool isCharging() {
+    if (gaugeOn) return hal_gauge_is_charging();
+    return hal_pmic_is_charging();
+}
+
+/*********************************************************************
+** Function: setBrightness
+** location: settings.cpp
+** set brightness value
+**********************************************************************/
+
+void _setBrightness(uint8_t brightval) { hal_bright_set(TFT_BL, brightval); }
+
+/*********************************************************************
+** Function: InputHandler
+** Handles the variables PrevPress, NextPress, SelPress, AnyKeyPress and EscPress
+**********************************************************************/
+void InputHandler(void) { hal_buttons_poll_6(buttonsCfg()); }
+
+/*********************************************************************
+** Function: powerOff
+** location: mykeyboard.cpp
+** Turns off the device (or try to)
+**********************************************************************/
+void powerOff() { hal_pmic_shutdown(); }
+
+/*********************************************************************
+** Function: checkReboot
+** location: mykeyboard.cpp
+** Btn logic to tornoff the device (name is odd btw)
+**********************************************************************/
+void checkReboot() {
+    int countDown;
+    /* Long press power off */
+    if (digitalRead(ESC_BTN) == BTN_ACT) {
+        uint32_t time_count = millis();
+        while (digitalRead(ESC_BTN) == BTN_ACT) {
+            // Display poweroff bar only if holding button
+            if (millis() - time_count > 500) {
+                tft.setTextSize(1);
+                tft.setTextColor(viperConfig.priColor, viperConfig.bgColor);
+                countDown = (millis() - time_count) / 1000 + 1;
+                if (countDown < 3)
+                    tft.drawCentreString("PWR OFF IN " + String(countDown) + "/2", tftWidth / 2, 12, 1);
+                else {
+                    tft.fillScreen(viperConfig.bgColor);
+                    while (digitalRead(ESC_BTN) == BTN_ACT);
+                    delay(200);
+                    powerOff();
+                }
+                delay(10);
+            }
+        }
+
+        // Clear text after releasing the button
+        delay(30);
+        tft.fillRect(60, 12, tftWidth - 60, tft.fontHeight(1), viperConfig.bgColor);
+    }
+}

@@ -1,0 +1,1 @@
+{"name": "ViperWifite", "version": "0.8.1-viper", "build": {"extraScript": "build_private.py"}, "dependencies": {"WiFi": "*", "Networking": "*", "FS": "*", "SPI": "*", "ViperHAL": "*"}}

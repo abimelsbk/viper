@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Viper Web Flasher</title>
+  <link rel="icon" href="assets/viper-logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="https://unpkg.com/esp-web-tools@10.1.0/dist/web/install-button.js?module"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <img src="assets/viper-logo.svg" alt="" width="34" height="34" />
+      <span>VIPER</span>
+    </a>
+    <nav class="nav-links" style="display:flex">
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main class="section flasher">
+    <h2><span class="tag">USB</span> Web Flasher</h2>
+    <p>Works in Chrome or Edge on a desktop. Connect your device with a data USB cable, choose the board, then press <b>Install</b>.</p>
+    <p class="muted small">If the port doesn't show up, hold the boot button (G0) while plugging in. StickC devices may need the CH9102 or CP210x driver.</p>
+
+    <div class="board-grid" id="boards"></div>
+
+    <div class="install-box">
+      <p id="chosen" class="muted">No board selected</p>
+      <esp-web-install-button id="installer">
+        <button slot="activate" class="btn btn-primary" disabled id="installBtn">Install Viper</button>
+        <span slot="unsupported" class="warn">Your browser can't flash over USB. Use Chrome or Edge on desktop.</span>
+        <span slot="not-allowed" class="warn">The flasher needs HTTPS or localhost.</span>
+      </esp-web-install-button>
+    </div>
+    <p class="muted small">Flashing erases the device. Firmware files are loaded from <code>firmware/Viper-&lt;board&gt;.bin</code> on this site.</p>
+  </main>
+
+  <footer class="footer">
+    Viper is a fork of <a href="https://github.com/pr3y/Bruce">Bruce firmware</a>, licensed under AGPL-3.0.
+  </footer>
+
+  <script src="site.js"></script>
+  <script>
+    const boards = document.getElementById("boards");
+    const installer = document.getElementById("installer");
+    const btn = document.getElementById("installBtn");
+    const chosen = document.getElementById("chosen");
+    const chipFamily = { "ESP32": "ESP32", "ESP32-S3": "ESP32-S3", "ESP32-P4": "ESP32-P4", "ESP32-C6": "ESP32-C6" };
+
+    window.VIPER_DEVICES.forEach((d) => {
+      const b = document.createElement("button");
+      b.className = "board-btn";
+      b.setAttribute("aria-pressed", "false");
+      b.innerHTML = `${d.name}<small>${d.chip} · ${d.env}</small>`;
+      b.onclick = () => {
+        boards.querySelectorAll(".board-btn").forEach((x) => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        // ESP Web Tools manifest, generated on the fly for the chosen board
+        const manifest = {
+          name: "Viper",
+          version: "1.17",
+          new_install_prompt_erase: true,
+          builds: [{ chipFamily: chipFamily[d.chip], parts: [{ path: new URL(`firmware/Viper-${d.env}.bin`, location.href).href, offset: 0 }] }],
+        };
+        installer.manifest = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: "application/json" }));
+        chosen.textContent = "Selected: " + d.name;
+        chosen.classList.remove("muted");
+        btn.disabled = false;
+      };
+      boards.appendChild(b);
+    });
+  </script>
+</body>
+</html>

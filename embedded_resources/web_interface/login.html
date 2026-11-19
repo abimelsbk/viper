@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viper</title>
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/theme.css">
+</head>
+
+<body>
+    <div class="dialog-background">
+        <form action="/login" method="POST">
+            <div class="dialog login">
+                <div class="dialog-head" style="display:flex;align-items:center;gap:8px">
+                    <svg class="viper-mark" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linejoin="round"><polygon points="50,6 88.1,28 88.1,72 50,94 11.9,72 11.9,28" stroke-width="5"/><path d="M34.96 71.47 A16 16 0 1 0 50 50 A16 16 0 1 1 63.86 26" stroke-width="9" stroke-linecap="round"/></g><polygon points="67.86,32.9 59.53,28.5 62.6,23.8 68.19,23.5" fill="currentColor"/></svg>
+                    VIPER // Login
+                </div>
+                <div class="dialog-body">
+                    <div id="notice" style="display: none;font-weight: bold;padding-bottom: 5px;"></div>
+                    <label for="username" class="oinput-label">Username</label>
+                    <input type="text" name="username" id="username" class="oinput-text-submit"
+                        style="margin-bottom: 10px">
+                    <label for="password" class="oinput-label">Password</label>
+                    <input type="password" name="password" class="oinput-text-submit">
+                </div>
+                <div class="dialog-footer">
+                    <input type="submit" class="btn-action" value="Login">
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('username').focus();
+
+        const params = new URLSearchParams(location.search);
+        const notice = document.getElementById('notice');
+        if (params.has('failed')) notice.style.display = 'block', notice.textContent = 'Login Failed - Please try again.';
+        else if (params.has('loggedout')) notice.style.display = 'block', notice.textContent = 'You have been logged out successfully.';
+    </script>
+</body>
+
+</html>
