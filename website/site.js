@@ -14,6 +14,9 @@ window.VIPER_DEVICES = [
   { name: "M5Stack StackChan", env: "m5stack-stackchan", chip: "ESP32-S3", f: ["➕", "➕", "➕", "✅", "✅", "✅"] },
   { name: "M5Stack Tab5", env: "m5stack-tab5", chip: "ESP32-P4", f: ["➕", "➕", "➕", "—", "—", "—"] },
   { name: "Arduino Nesso N1", env: "arduino-nesso-n1", chip: "ESP32-C6", f: ["➕", "➕", "➕", "—", "—", "—"] },
+  { name: "ESP32 DevKit V1 / WROOM (no screen, WebUI)", env: "esp32-wroom-headless", chip: "ESP32", f: ["➕", "➕", "➕", "❌", "➕ CH9329", "❌"] },
+  { name: "ESP32 WROOM + ILI9341 screen", env: "esp-wroom32-ili9341", chip: "ESP32", f: ["➕", "➕", "➕", "❌", "➕ CH9329", "❌"] },
+  { name: "ESP32 WROOM + ST7789 screen", env: "esp-wroom32-st7789", chip: "ESP32", f: ["➕", "➕", "➕", "❌", "➕ CH9329", "❌"] },
 ];
 
 (function () {

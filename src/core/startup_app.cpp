@@ -41,7 +41,13 @@ StartupApp::StartupApp() {
     _startupApps["WardrivingNoRadio"] = []() { Wardriving(); };
     _startupApps["WardrivingBTEOnly"] = []() { Wardriving(false, true); };
     _startupApps["WardrivingWifiOnly"] = []() { Wardriving(true, false); };
+#if defined(USE_DUMMY_TFT)
+    // Headless: always bring up Viper's own access point so the device is reachable
+    // without a screen, a saved network or a serial cable.
+    _startupApps["WebUI"] = []() { startWebUi(true); };
+#else
     _startupApps["WebUI"] = []() { startWebUi(!wifiConnecttoKnownNet()); };
+#endif
 #if !defined(LITE_VERSION) && !defined(DISABLE_INTERPRETER)
     _startupApps["JS Interpreter"] = []() {
         FS *fs = nullptr;

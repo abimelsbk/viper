@@ -26,6 +26,7 @@ The firmware also builds for:
 
 - **LilyGO:** T-Embed and T-Embed CC1101 (Plus), T-Deck / T-Deck Pro, T-Display S3 (and Pro), T-Watch S3 / Ultra, T-LoRa Pager, T-HMI, T4
 - **CYD ("Cheap Yellow Display"):** `CYD-2432S028` and others
+- **ESP32 DevKit V1 / WROOM, no screen:** `esp32-wroom-headless`. You control it through its own Wi-Fi AP and the web UI. See [ESP32 DevKit V1 (no screen)](esp32-headless.md)
 - **Plain ESP32-WROOM** with an SPI display: `esp-wroom32-ili9341`, `esp-wroom32-st7789`
 - **ESP32-S3 dev boards:** `esp32s3-ili9341`, `esp32s3-st7789`, `esp32-s3-n16r8-st7789v`, Seeed XIAO ESP32S3
 - **ESP32-C5** (5 GHz Wi-Fi) boards, Elecrow panels, Marauder Mini/Touch, Lilka, Phantom, Mako, Smoochiee and RF Reaper PCBs

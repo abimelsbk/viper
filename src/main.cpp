@@ -548,6 +548,11 @@ void setup() {
     if (viperConfig.startupApp != "" && !startupApp.startApp(viperConfig.startupApp)) {
         viperConfig.setStartupApp("");
     }
+#if defined(USE_DUMMY_TFT)
+    // Headless safety net: with no screen, the web UI is the only way in, so make sure
+    // the access point and web server are up even if the startup app was changed.
+    if (!isWebUIActive) startWebUi(true);
+#endif
 
     RAM_LOG("setup-end");
 }
@@ -592,15 +597,19 @@ void loop() {
     tft.setLogging();
     Serial.println(
         "\n"
-        "██████  ██████  ██    ██  ██████ ███████ \n"
-        "██   ██ ██   ██ ██    ██ ██      ██      \n"
-        "██████  ██████  ██    ██ ██      █████   \n"
-        "██   ██ ██   ██ ██    ██ ██      ██      \n"
-        "██████  ██   ██  ██████   ██████ ███████ \n"
-        "                                         \n"
-        "         PREDATORY FIRMWARE\n\n"
-        "Tips: Connect to the WebUI for better experience\n"
-        "      Add your network by sending: wifi add ssid password\n\n"
+        "██    ██ ██ ██████  ███████ ██████  \n"
+        "██    ██ ██ ██   ██ ██      ██   ██ \n"
+        "██    ██ ██ ██████  █████   ██████  \n"
+        " ██  ██  ██ ██      ██      ██   ██ \n"
+        "  ████   ██ ██      ███████ ██   ██ \n"
+        "                                    \n"
+        "           STRIKE FIRST\n"
+    );
+    Serial.println(
+        "Headless mode: join Wi-Fi '" + viperConfig.wifiAp.ssid + "' (password '" + viperConfig.wifiAp.pwd +
+        "')\n      and open http://" + (wifiIP.length() ? wifiIP : String("172.0.0.1")) +
+        " or http://viper.local to control Viper.\n"
+        "Tips: Add your network by sending: wifi add ssid password\n"
         "At your command:"
     );
 

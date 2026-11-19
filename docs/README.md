@@ -11,6 +11,7 @@ Viper is an open-source ESP32 firmware for authorized security research and hard
 | [Install Viper](getting-started/install.md) | Web flasher, esptool, or building from source |
 | [First boot](getting-started/first-boot.md) | What you'll see, SD card setup, moving over from Bruce |
 | [Supported devices](hardware/devices.md) | Every board target and the modules each one can use |
+| [ESP32 DevKit V1 (no screen)](hardware/esp32-headless.md) | Run Viper on a bare ESP32 and control it from your phone |
 
 ## Using Viper
 

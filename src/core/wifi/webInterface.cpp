@@ -773,6 +773,15 @@ void startWebUi(bool mode_ap) {
     tft.setLogging();
     drawWebUiScreen(mode_ap);
 
+#if defined(USE_DUMMY_TFT)
+    // Headless boards: there is no screen to hold and no button to dismiss it, so keep
+    // the server running in the background and return straight away. The device is then
+    // driven from the browser (Navigator / Serial Cmd).
+    Serial.println("WebUI running. Join Wi-Fi '" + viperConfig.wifiAp.ssid + "' and open http://" + wifiIP);
+    (void)keepWifiConnected;
+    return;
+#endif
+
     while (!check(EscPress)) {
         // nothing here, just to hold the screen until the server is on.
         vTaskDelay(pdMS_TO_TICKS(70));
