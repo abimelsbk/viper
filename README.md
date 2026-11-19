@@ -6,8 +6,6 @@
 Wi-Fi, BLE, Sub-GHz (CC1101), RFID/NFC, IR, NRF24, BadUSB, GPS/wardriving, a web interface and a JavaScript runtime,
 wrapped in a new "venom" interface.
 
-> Viper is a fork of [Bruce firmware](https://github.com/pr3y/Bruce) by pr3y and contributors, and stays licensed under **AGPL-3.0**.
-> All original features are kept. See [Credits](#credits).
 
 ## Documentation
 
