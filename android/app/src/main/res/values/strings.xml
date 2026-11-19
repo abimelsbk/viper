@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Viper</string>
+    <string name="app_title">VIPER</string>
+
+    <string name="join">Connect to Viper</string>
+    <string name="already_connected">I\'m already on its Wi-Fi</string>
+    <string name="connect_hint">Power on your Viper device, then tap Connect.\nThe app joins \"%1$s\" and opens http://%2$s</string>
+    <string name="legal_note">For authorized security testing only.\nViper is open source (AGPL-3.0), based on Bruce firmware.</string>
+
+    <string name="status_checking">Looking for Viper at %1$s…</string>
+    <string name="status_connected">Connected · %1$s</string>
+    <string name="status_unreachable">Viper not found at %1$s</string>
+    <string name="status_joining">Joining %1$s…</string>
+    <string name="status_join_failed">Couldn\'t join %1$s. Check it\'s powered on and the password in Settings.</string>
+    <string name="status_lost">Lost connection to %1$s</string>
+    <string name="join_manually">Join the Wi-Fi \"%1$s\" in Settings, then come back and tap \"I\'m already on its Wi-Fi\".</string>
+    <string name="no_wifi">Not connected to any Wi-Fi.</string>
+
+    <string name="downloading">Downloading %1$s…</string>
+    <string name="downloaded">Saved %1$s to Downloads/Viper</string>
+    <string name="download_failed">Download failed: %1$s</string>
+
+    <string name="reload">Reload</string>
+    <string name="settings">Settings</string>
+    <string name="setting_ssid">Viper Wi-Fi name (AP)</string>
+    <string name="setting_pass">Viper Wi-Fi password</string>
+    <string name="setting_host">Device address</string>
+    <string name="save">Save</string>
+    <string name="reset">Defaults</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="venom">#39FF14</color>
+    <color name="venom_dark">#1FA80F</color>
+    <color name="venom_dim">#3339FF14</color>
+    <color name="bg">#050805</color>
+    <color name="bar">#0B120B</color>
+    <color name="text">#D8F5D0</color>
+    <color name="muted">#8AA883</color>
+</resources>

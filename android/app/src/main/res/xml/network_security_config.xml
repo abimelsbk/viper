@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Viper's web interface is plain HTTP on a local network (172.0.0.1, viper.local or a LAN IP),
+     so cleartext traffic has to be allowed. The app only loads the device's own pages;
+     other links open in the system browser. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
